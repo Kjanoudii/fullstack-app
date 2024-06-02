@@ -1,23 +1,45 @@
 'use client'
 
-import {useEffect, useState} from 'react'
-import axios from 'axios'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 type PageProps = {
   params: {
     id: any;
   };
 };
+
 type Post = {
   title: string;
-  postText:string;
-  username:string;
+  postText: string;
+  username: string;
 };
-const Page = ({params}:PageProps) => {
-  const [post, setPost] = useState<Post>({ title: "", postText: "", username:"" }); 
+
+type Comment = {
+  commentBody: string;
+};
+
+const Page = ({ params }: PageProps) => {
+  const [post, setPost] = useState<Post>({ title: "", postText: "", username: "" }); 
+  const [comments, setComments] = useState<Comment[]>([]); 
+  const [newComment, setNewComment] = useState("");
+ 
 
   const { id } = params;
+
+  const addComment = () => {
+    axios.post("http://localhost:3001/comments", {
+        commentBody: newComment,
+        PostId: id,
+      }).then((response) => {
+        const commentToAdd = { commentBody: newComment };
+        setComments([...comments, commentToAdd]);
+        setNewComment("");
+      });
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       try {
         const res = await axios.get(`http://localhost:3001/posts/byId/${id}`);
         setPost(res.data);
@@ -27,16 +49,54 @@ const Page = ({params}:PageProps) => {
       }
     };
 
-    fetchData();
-  }, []);
+    const fetchComments = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3001/comments/${id}`);
+        setComments(res.data);
+        console.log("This is the data:", res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchPosts();
+    fetchComments();
+  }, [id]);
 
   return (
-    <div className="text-3xl">
-      <h2>{post.title}</h2>
-      <h2>{post.postText}</h2>
-      <h2>{post.username}</h2>
+    <div className="postPage">
+      <div className="leftSide">
+        <div className="post" id="individual">
+          <div className="title"> {post.title} </div>
+          <div className="body">{post.postText}</div>
+          <div className="footer">{post.username}</div>
+        </div>
+      </div>
+      <div className="rightSide">
+        <div className="addCommentContainer">
+          <input
+            type="text"
+            placeholder="Comment..."
+            autoComplete="off"
+            value={newComment}
+            onChange={(event) => {
+              setNewComment(event.target.value);
+            }}
+          />
+          <button onClick={addComment}> Add Comment</button>
+        </div>
+        <div className="listOfComments">
+          {comments.map((comment, key) => {
+            return (
+              <div key={key} className="comment">
+                {comment.commentBody}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
-export default Page
+export default Page;

@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { title } from "process";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 type Post = {
   id: number;
   title: string;
@@ -12,6 +13,7 @@ type Post = {
   username: string;
 };
 const Page = () => {
+    const router = useRouter();
   const [postsData, setPostsData] = useState<Post[]>([]);
 
   const initialValues = {
@@ -29,6 +31,7 @@ const Page = () => {
     axios.post("http://localhost:3001/posts", data).then((res) => {
       setPostsData(res.data);
       console.log("it worked");
+      router.push('/')
     });
   };
   return (
@@ -47,33 +50,32 @@ const Page = () => {
           validationSchema={validation}
         >
           <Form className="formContainer">
-            <label>Title:</label>
-            <ErrorMessage name="title" component={"span"} />
+            <label>Title: </label>
+            <ErrorMessage name="title" component="span" />
             <Field
+              autocomplete="off"
               id="inputCreatePost"
               name="title"
               placeholder="(Ex. Title...)"
             />
-
-            <label>Post:</label>
-            <ErrorMessage name="post" component={"span"} />
-
+            <label>Post: </label>
+            <ErrorMessage name="postText" component="span" />
             <Field
+              autocomplete="off"
               id="inputCreatePost"
               name="postText"
               placeholder="(Ex. Post...)"
             />
-
-            <label>Username:</label>
-            <ErrorMessage name="username" component={"span"} />
-
+            <label>Username: </label>
+            <ErrorMessage name="username" component="span" />
             <Field
+              autocomplete="off"
               id="inputCreatePost"
               name="username"
               placeholder="(Ex. John123...)"
             />
 
-            <button typeof="submit">Create Post</button>
+            <button type="submit"> Create Post</button>
           </Form>
         </Formik>
       </div>

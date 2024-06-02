@@ -9,14 +9,14 @@
   "test": {
     "username": "root",
     "password": "whitelion",
-    "database": "database_test",
+    "database": "mydb",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "whitelion",
-    "database": "database_production",
+    "database": "mydb",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

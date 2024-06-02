@@ -23,13 +23,36 @@ export default function Home() {
 console.log("hello")
   return (
     <div className="App">
-      <Link
-        className="border border-gray-200 text-gray-900 bg-gray-100 transition duration-300 ease-in-out 
-rounded-md py-3 px-5 hover:bg-gray-400 font-semibold hover:text-white"
-        href={"/createpost"}
-      >
-        CREATE POST
-      </Link>
+      <div className="flex gap-2">
+        <Link
+          className="border border-gray-200 text-gray-900 bg-gray-100 transition duration-300 ease-in-out 
+        rounded-md py-3 px-5 hover:bg-gray-400 font-semibold hover:text-white"
+          href={"/"}
+        >
+          HOME
+        </Link>
+        <Link
+          className="border border-gray-200 text-gray-900 bg-gray-100 transition duration-300 ease-in-out 
+        rounded-md py-3 px-5 hover:bg-gray-400 font-semibold hover:text-white"
+          href={"/createpost"}
+        >
+          CREATE POST
+        </Link>
+        <Link
+          className="border border-gray-200 text-gray-900 bg-gray-100 transition duration-300 ease-in-out 
+        rounded-md py-3 px-5 hover:bg-gray-400 font-semibold hover:text-white"
+          href={"/login"}
+        >
+          LOGIN
+        </Link>
+        <Link
+          className="border border-gray-200 text-gray-900 bg-gray-100 transition duration-300 ease-in-out 
+        rounded-md py-3 px-5 hover:bg-gray-400 font-semibold hover:text-white"
+          href={"/register"}
+        >
+         REGISTER
+        </Link>
+      </div>
 
       {postsData.map((item) => (
         <Link href={`/${item.id}`} className="post" key={item.id}>
