@@ -36,13 +36,7 @@ const Page = () => {
   };
   return (
     <div className="flex flex-col items-center">
-      <Link
-        className="border border-gray-200 text-gray-900 bg-gray-100 transition duration-200 ease-in-out 
-        rounded-md py-3 px-5 mt-5 hover:bg-gray-400 font-semibold hover:text-white"
-        href={"/"}
-      >
-        Back to home
-      </Link>
+     
       <div className="createPostPage">
         <Formik
           initialValues={initialValues}
@@ -75,7 +69,7 @@ const Page = () => {
               placeholder="(Ex. John123...)"
             />
 
-            <button type="submit"> Create Post</button>
+            <button type="submit">Create Post</button>
           </Form>
         </Formik>
       </div>

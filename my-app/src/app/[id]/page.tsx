@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 type PageProps = {
   params: {
@@ -17,24 +17,44 @@ type Post = {
 
 type Comment = {
   commentBody: string;
+  username:string
+
 };
 
 const Page = ({ params }: PageProps) => {
-  const [post, setPost] = useState<Post>({ title: "", postText: "", username: "" }); 
-  const [comments, setComments] = useState<Comment[]>([]); 
+  const [post, setPost] = useState<Post>({
+    title: "",
+    postText: "",
+    username: "",
+  });
+  const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
- 
 
   const { id } = params;
 
   const addComment = () => {
-    axios.post("http://localhost:3001/comments", {
-        commentBody: newComment,
-        PostId: id,
-      }).then((response) => {
-        const commentToAdd = { commentBody: newComment };
-        setComments([...comments, commentToAdd]);
-        setNewComment("");
+    axios
+      .post(
+        "http://localhost:3001/comments",
+        {
+          commentBody: newComment,
+          PostId: id,
+        },
+        {
+          headers: {
+            accessToken: sessionStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          alert("Login before posting a comment");
+          console.log(response.data.error)
+        } else {
+          const commentToAdd = { commentBody: newComment, username: response.data.username };
+          setComments([...comments, commentToAdd]);
+          setNewComment("");
+        }
       });
   };
 
@@ -67,9 +87,15 @@ const Page = ({ params }: PageProps) => {
     <div className="postPage">
       <div className="leftSide">
         <div className="post" id="individual">
-          <div className="title"> {post.title} </div>
-          <div className="body">{post.postText}</div>
-          <div className="footer">{post.username}</div>
+          {post ? (
+            <>
+              <div className="title"> {post.title} </div>
+              <div className="body">{post.postText}</div>
+              <div className="footer">{post.username}</div>
+            </>
+          ) : (
+            <div>Loading...</div>
+          )}
         </div>
       </div>
       <div className="rightSide">
@@ -89,7 +115,8 @@ const Page = ({ params }: PageProps) => {
           {comments.map((comment, key) => {
             return (
               <div key={key} className="comment">
-                {comment.commentBody}
+                <div>{comment.commentBody}</div>
+               <div>{comment.username}</div>
               </div>
             );
           })}
@@ -97,6 +124,6 @@ const Page = ({ params }: PageProps) => {
       </div>
     </div>
   );
-}
+};
 
 export default Page;
