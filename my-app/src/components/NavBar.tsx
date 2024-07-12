@@ -11,6 +11,9 @@ const NavBar = () => {
 
   const { authState, setAuthState } = useContext(AuthContext);
   console.log(authState);
+  
+
+  console.log("nav bar authenticated?", authState.status)
 
   return (
     <>
@@ -29,7 +32,7 @@ const NavBar = () => {
           rounded-md py-3 px-5 hover:bg-gray-400 font-semibold hover:text-white ${
             pathname == "/createpost" ? "underline" : ""
           }`}
-          href={"/createpost"}
+          href={authState.status ? "/createpost" : "login"}
         >
           CREATE POST
         </Link>

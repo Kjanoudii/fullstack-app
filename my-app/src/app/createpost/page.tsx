@@ -13,30 +13,33 @@ type Post = {
   username: string;
 };
 const Page = () => {
-    const router = useRouter();
+  const router = useRouter();
   const [postsData, setPostsData] = useState<Post[]>([]);
 
   const initialValues = {
     title: "",
     postText: "",
-    username: "",
   };
 
   const validation = Yup.object().shape({
     title: Yup.string().required(),
     postText: Yup.string().required(),
-    username: Yup.string().min(3).max(15).required(),
   });
   const onSubmit = (data: any) => {
-    axios.post("http://localhost:3001/posts", data).then((res) => {
-      setPostsData(res.data);
-      console.log("it worked");
-      router.push('/')
-    });
+    axios
+      .post("http://localhost:3001/posts", data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((res) => {
+        setPostsData(res.data);
+        console.log("it worked");
+        router.push("/");
+      });
   };
   return (
     <div className="flex flex-col items-center">
-     
       <div className="createPostPage">
         <Formik
           initialValues={initialValues}
@@ -59,14 +62,6 @@ const Page = () => {
               id="inputCreatePost"
               name="postText"
               placeholder="(Ex. Post...)"
-            />
-            <label>Username: </label>
-            <ErrorMessage name="username" component="span" />
-            <Field
-              autocomplete="off"
-              id="inputCreatePost"
-              name="username"
-              placeholder="(Ex. John123...)"
             />
 
             <button type="submit">Create Post</button>

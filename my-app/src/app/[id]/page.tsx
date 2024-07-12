@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+
+import { AuthContext } from "../layout";
+import { useRouter } from "next/navigation";
 
 type PageProps = {
   params: {
@@ -13,19 +16,23 @@ type Post = {
   title: string;
   postText: string;
   username: string;
+  id: any;
 };
 
 type Comment = {
   commentBody: string;
-  username:string
-
+  username: string;
+  id: number;
 };
 
 const Page = ({ params }: PageProps) => {
+  const router = useRouter();
+  const { authState, setAuthState } = useContext(AuthContext);
   const [post, setPost] = useState<Post>({
     title: "",
     postText: "",
     username: "",
+    id:"",
   });
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
@@ -42,19 +49,47 @@ const Page = ({ params }: PageProps) => {
         },
         {
           headers: {
-            accessToken: sessionStorage.getItem("accessToken"),
+            accessToken: localStorage.getItem("accessToken"),
           },
         }
       )
       .then((response) => {
         if (response.data.error) {
-          alert("Login before posting a comment");
-          console.log(response.data.error)
+          alert(response.data.error);
+          console.log(response.data.error);
         } else {
-          const commentToAdd = { commentBody: newComment, username: response.data.username };
+          const commentToAdd = {
+            commentBody: newComment,
+            username: response.data.username,
+            id: response.data.id,
+          };
           setComments([...comments, commentToAdd]);
           setNewComment("");
         }
+      });
+  };
+
+  const deleteComment = (id: number) => {
+    axios
+      .delete(`http://localhost:3001/comments/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        setComments(
+          comments.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+  };
+
+  const deletePost = (id: any) => {
+    axios
+      .delete(`http://localhost:3001/posts/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        router.push("/");
       });
   };
 
@@ -91,7 +126,19 @@ const Page = ({ params }: PageProps) => {
             <>
               <div className="title"> {post.title} </div>
               <div className="body">{post.postText}</div>
-              <div className="footer">{post.username}</div>
+              <div className="footer">
+                {post.username}
+                {authState.username === post.username && (
+                  <button
+                    onClick={() => {
+                      deletePost(post.id);
+                    }}
+                  >
+                    {" "}
+                    Delete Post
+                  </button>
+                )}
+              </div>
             </>
           ) : (
             <div>Loading...</div>
@@ -115,8 +162,19 @@ const Page = ({ params }: PageProps) => {
           {comments.map((comment, key) => {
             return (
               <div key={key} className="comment">
-                <div>{comment.commentBody}</div>
-               <div>{comment.username}</div>
+                <div className="flex gap-3">
+                  <div>{comment.commentBody}</div>
+                  <div>{comment.username}</div>
+                </div>
+                {authState.username === comment.username && (
+                  <div
+                    onClick={() => deleteComment(comment.id)}
+                    className="border mt-3 border-gray-400 rounded-full inline-block 
+                px-2 cursor-pointer"
+                  >
+                    X
+                  </div>
+                )}
               </div>
             );
           })}
