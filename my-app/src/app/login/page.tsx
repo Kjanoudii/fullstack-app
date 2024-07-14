@@ -37,6 +37,7 @@ function Login() {
 
   return (
     <div className="loginContainer">
+      <h2 className="mb-10 font-semibold">Login to Create Posts</h2>
       <label>Username:</label>
       <input
         className="px-3"

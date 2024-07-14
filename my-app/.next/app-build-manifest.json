@@ -12,11 +12,27 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/createpost/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/createpost/page.js"
+    ],
     "/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/[id]/page.css",
       "static/chunks/app/[id]/page.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/login/page.css",
+      "static/chunks/app/login/page.js"
+    ],
+    "/registration/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/registration/page.js"
     ]
   }
 }

@@ -32,7 +32,7 @@ const Page = ({ params }: PageProps) => {
     title: "",
     postText: "",
     username: "",
-    id:"",
+    id: "",
   });
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
@@ -121,12 +121,12 @@ const Page = ({ params }: PageProps) => {
   return (
     <div className="postPage">
       <div className="leftSide">
-        <div className="post" id="individual">
+        <div className="post " id="individual">
           {post ? (
             <>
               <div className="title"> {post.title} </div>
-              <div className="body">{post.postText}</div>
-              <div className="footer">
+              <div className="body px-5">{post.postText}</div>
+              <div className="footer py-2">
                 {post.username}
                 {authState.username === post.username && (
                   <button
@@ -148,6 +148,7 @@ const Page = ({ params }: PageProps) => {
       <div className="rightSide">
         <div className="addCommentContainer">
           <input
+            className="px-2"
             type="text"
             placeholder="Comment..."
             autoComplete="off"
@@ -161,20 +162,21 @@ const Page = ({ params }: PageProps) => {
         <div className="listOfComments">
           {comments.map((comment, key) => {
             return (
-              <div key={key} className="comment">
-                <div className="flex gap-3">
+              <div key={key} className="comment flex flex-col ">
+                <div className="text-gray-500">{comment.username}</div>
+
+                <div className="flex gap-3 items-center justify-between font-semibold text-gray-800">
                   <div>{comment.commentBody}</div>
-                  <div>{comment.username}</div>
+                  {authState.username === comment.username && (
+                    <div
+                      onClick={() => deleteComment(comment.id)}
+                      className="border  border-gray-400 rounded-full inline-block text-gray-600
+                  px-2 cursor-pointer"
+                    >
+                      X
+                    </div>
+                  )}
                 </div>
-                {authState.username === comment.username && (
-                  <div
-                    onClick={() => deleteComment(comment.id)}
-                    className="border mt-3 border-gray-400 rounded-full inline-block 
-                px-2 cursor-pointer"
-                  >
-                    X
-                  </div>
-                )}
               </div>
             );
           })}
