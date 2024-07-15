@@ -497,11 +497,11 @@ video {
   --tw-contain-paint:  ;
   --tw-contain-style:  ;
 }
-.mt-3 {
-  margin-top: 0.75rem;
-}
 .mb-10 {
   margin-bottom: 2.5rem;
+}
+.mt-3 {
+  margin-top: 0.75rem;
 }
 .inline-block {
   display: inline-block;
@@ -590,9 +590,6 @@ video {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-.text-center {
-  text-align: center;
 }
 .font-semibold {
   font-weight: 600;
