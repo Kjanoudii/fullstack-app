@@ -3,7 +3,7 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 
-import { AuthContext } from "../layout";
+import { AuthContext } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 type PageProps = {

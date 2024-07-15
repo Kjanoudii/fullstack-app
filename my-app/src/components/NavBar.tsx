@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { AuthContext } from "../app/layout";
+import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import icon from "../icons/icons8-administrator-male-24.png";
 import Image from "next/image";

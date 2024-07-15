@@ -2,7 +2,7 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { AuthContext } from "./layout";
+import { AuthContext } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
