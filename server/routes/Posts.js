@@ -3,6 +3,9 @@ const router = express.Router();
 const { Posts, Likes } = require("../models");
 
 const { validateToken } = require("../middleware/AuthMiddleWare");
+
+
+
 router.get("/", async (req, res) => {
   const listOfPosts = await Posts.findAll({ include: [Likes] });
   res.json(listOfPosts);

@@ -15,6 +15,7 @@ type Post = {
   Likes: number[];
 };
 
+
 export default function Home() {
   const router = useRouter();
   // Use the defined type in the state
@@ -89,7 +90,7 @@ export default function Home() {
       {postsData.slice().reverse().map((item) => (
         <div className="post" key={item.id}>
           <h3 className="title">{item.title}</h3>
-          <div className="body px-4" onClick={() => router.push(`${`/${item.id}`}`)}>
+          <div className="body px-4" onClick={() => router.push(`${`post/${item.id}`}`)}>
             {item.postText}
           </div>
           <div className="footer  justify-between px-5 items-center py-2">
